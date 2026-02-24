@@ -1,5 +1,6 @@
 package com.cohad.springai.controller;
 
+import com.cohad.springai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,8 +57,10 @@ public class PromptController {
     public String promptStuffing(@RequestParam("message") String message){
         return openAi
                 .prompt()
+                .advisors(new TokenUsageAuditAdvisor())
                 .system(leavePolicyResource)
                 .user(message)
                 .call().content();
+        //Toke usage details: DefaultUsage{promptTokens=193, completionTokens=1156, totalTokens=1349}
     }
 }
