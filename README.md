@@ -5,6 +5,7 @@ This repo is a minimal Spring Boot playground to explore **chat models** using:
 2) **Ollama** (local LLM runtime)
 3) **Gemma** (via Docker Desktop)
 4) **Exploring Prompt Templates and Stuffing**
+5) **Chat Streaming**
 5) Yet To Decide...
 
 

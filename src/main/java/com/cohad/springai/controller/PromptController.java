@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api/prompt/openai")
@@ -61,5 +62,13 @@ public class PromptController {
                 .user(message)
                 .call().content();
         //Toke usage details: DefaultUsage{promptTokens=193, completionTokens=1251, totalTokens=1444}
+    }
+    @GetMapping("/stream")
+    public Flux<String> promptStreaming(@RequestParam("message") String message){
+        return openAi
+                .prompt()
+                .system(leavePolicyResource)
+                .user(message)
+                .stream().content();
     }
 }
