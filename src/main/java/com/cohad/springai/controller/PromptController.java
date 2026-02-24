@@ -21,7 +21,9 @@ public class PromptController {
     }
 
     @Value("classpath:/PromptTemplates/emailResponse.st")
-            private Resource emailResponseResource;
+    private Resource emailResponseResource;
+    @Value("classpath:/PromptTemplates/LeavePolicy.st")
+    private Resource leavePolicyResource;
 
     @GetMapping("/joke")
     public String chat(@RequestParam("message") String message){
@@ -47,6 +49,15 @@ public class PromptController {
                 promptUserSpec.text(emailResponseResource)
                         .param("customerName", customerName)
                         .param("customerMessage", customerMessage))
+                .call().content();
+    }
+
+    @GetMapping("/leave")
+    public String promptStuffing(@RequestParam("message") String message){
+        return openAi
+                .prompt()
+                .system(leavePolicyResource)
+                .user(message)
                 .call().content();
     }
 }
