@@ -57,10 +57,9 @@ public class PromptController {
     public String promptStuffing(@RequestParam("message") String message){
         return openAi
                 .prompt()
-                .advisors(new TokenUsageAuditAdvisor())
                 .system(leavePolicyResource)
                 .user(message)
                 .call().content();
-        //Toke usage details: DefaultUsage{promptTokens=193, completionTokens=1156, totalTokens=1349}
+        //Toke usage details: DefaultUsage{promptTokens=193, completionTokens=1251, totalTokens=1444}
     }
 }

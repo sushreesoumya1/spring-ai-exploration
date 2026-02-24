@@ -1,6 +1,8 @@
 package com.cohad.springai.config;
 
+import com.cohad.springai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaChatOptions;
@@ -13,7 +15,9 @@ public class ChatConfiguration {
 
     @Bean("openAiChatClient")
     ChatClient openAiChatClient(OpenAiChatModel openAiChatModel) {
-        return ChatClient.builder(openAiChatModel).build();
+        return ChatClient.builder(openAiChatModel)
+                .defaultAdvisors(new SimpleLoggerAdvisor(), new TokenUsageAuditAdvisor())
+                .build();
     }
 
     @Bean("ollamaLlamaClient")
