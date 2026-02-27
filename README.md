@@ -9,7 +9,8 @@ This repo is a minimal Spring Boot playground to explore chat models using:
 6) Add Conversation ID for the chats
 7) Store chats using H2 DB
 8) Limit chat history
-9) Yet To Decide...
+9) Vector store setup 
+10) Yet To Decide...
 
 
 ## Prerequisites
