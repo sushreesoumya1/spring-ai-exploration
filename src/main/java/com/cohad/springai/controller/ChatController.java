@@ -16,17 +16,11 @@ public class ChatController {
     private static final Logger log = LoggerFactory.getLogger(ChatController.class);
 
     private final ChatClient openAi;
-    private final ChatClient ollamaLlama;
-    private final ChatClient ollamaGemma3;
 
     public ChatController(
-            @Qualifier("openAiChatClient") ChatClient openAi,
-            @Qualifier("ollamaLlamaClient") ChatClient ollamaLlama,
-            @Qualifier("ollamaGemma3Client") ChatClient ollamaGemma3
+            @Qualifier("openAiChatClient") ChatClient openAi
     ) {
         this.openAi = openAi;
-        this.ollamaLlama = ollamaLlama;
-        this.ollamaGemma3 = ollamaGemma3;
     }
 
 
@@ -34,22 +28,6 @@ public class ChatController {
     public String getOpenAiChat(@RequestParam("message") String message) {
         log.debug("message: {}", message);
         String response = openAi.prompt(message).call().content();
-        log.debug("response: {}", response);
-        return response;
-    }
-
-    @GetMapping("/llama")
-    public  String getOllamaChat(@RequestParam("message") String message){
-        log.debug("message: {}", message);
-        String response = ollamaLlama.prompt(message).call().content();
-        log.debug("response: {}", response);
-        return response;
-    }
-
-    @GetMapping("/gemma")
-    public  String getGemaChat(@RequestParam("message") String message){
-        log.debug("message: {}", message);
-        String response = ollamaGemma3.prompt(message).call().content();
         log.debug("response: {}", response);
         return response;
     }

@@ -6,12 +6,14 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.ollama.OllamaChatModel;
-import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaChatOptions;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.preretrieval.query.transformation.TranslationQueryTransformer;
+import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 
@@ -26,35 +28,25 @@ public class ChatConfiguration {
     }
 
     @Bean("chatMemoryClient")
-    ChatClient chatMemoryClient(OpenAiChatModel openAiChatModel, ChatMemory chatMemory) {
+    @Primary
+    ChatClient chatMemoryClient(OpenAiChatModel openAiChatModel,
+                                ChatMemory chatMemory,
+                                RetrievalAugmentationAdvisor  retrievalAugmentationAdvisor) {
         Advisor loggerAdvisor = new SimpleLoggerAdvisor();
         Advisor memoryAdvisor = MessageChatMemoryAdvisor.builder(chatMemory).build();
         return  ChatClient.builder(openAiChatModel)
-                .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor))
+                .defaultAdvisors(List.of(loggerAdvisor, memoryAdvisor, retrievalAugmentationAdvisor))
                 .build();
     }
-
-    @Bean("ollamaLlamaClient")
-    ChatClient ollamaLlamaClient(OllamaApi ollamaApi) {
-        OllamaChatModel llamaModel = OllamaChatModel.builder()
-                .ollamaApi(ollamaApi)
-                .defaultOptions(OllamaChatOptions.builder()
-                        .model("llama3.2:1b")
-                        .build())
+    @Bean
+    RetrievalAugmentationAdvisor retrievalAugmentationAdvisor(VectorStore vectorStore,
+                                                              ChatClient.Builder chatClientBuilder) {
+        return RetrievalAugmentationAdvisor.builder()
+                .queryTransformers(TranslationQueryTransformer.builder()
+                        .chatClientBuilder(chatClientBuilder.clone())
+                        .targetLanguage("english").build())
+                .documentRetriever(VectorStoreDocumentRetriever.builder().vectorStore(vectorStore)
+                        .topK(3).similarityThreshold(0.5).build())
                 .build();
-
-        return ChatClient.builder(llamaModel).build();
-    }
-    
-    @Bean("ollamaGemma3Client")
-    ChatClient ollamaGemma3Client(OllamaApi ollamaApi) {
-        OllamaChatModel gemmaModel = OllamaChatModel.builder()
-                .ollamaApi(ollamaApi)
-                .defaultOptions(OllamaChatOptions.builder()
-                        .model("gemma3")
-                        .build())
-                .build();
-
-        return ChatClient.builder(gemmaModel).build();
     }
 }
