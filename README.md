@@ -14,7 +14,8 @@ This repo is a minimal Spring Boot playground to explore chat models using:
 11) RAG (with web-search capabilities)
 12) MP3 to Text
 13) Text to MP3
-14) Yet To Decide...
+14) Text to Image
+15) Yet To Decide...
 
 
 ## Prerequisites
