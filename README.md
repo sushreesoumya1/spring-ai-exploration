@@ -12,7 +12,8 @@ This repo is a minimal Spring Boot playground to explore chat models using:
 9) Vector store setup 
 10) RAG (using RetrievalAugmentationAdvisor)
 11) RAG (with web-search capabilities)
-12) Yet To Decide...
+12) MP3 to Text
+13) Yet To Decide...
 
 
 ## Prerequisites
