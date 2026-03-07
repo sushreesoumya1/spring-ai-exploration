@@ -1,6 +1,6 @@
 # Spring AI Exploration
 
-This repo is a minimal Spring Boot playground to explore chat models using:
+A Spring Boot playground for experimenting with Spring AI features including chat models (OpenAI, Ollama, Gemma), RAG, vector search, streaming, multimodal AI (speech, image), observability, and evaluation.
 1) OpenAI (via API key)
 2) Ollama (local LLM runtime)
 3) Gemma (via Docker Desktop)
