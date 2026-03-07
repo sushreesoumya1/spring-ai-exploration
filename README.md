@@ -16,7 +16,8 @@ This repo is a minimal Spring Boot playground to explore chat models using:
 13) Text to MP3
 14) Text to Image
 15) Prometheus and Grafana
-16) Yet To Decide...
+16) Unit Test with Evaluators
+17) Yet To Decide...
 
 
 ## Prerequisites
